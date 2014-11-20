@@ -80,14 +80,12 @@ static inline void set_bit (bsize_t *set, bsize_t bit) {
   assert(set != NULL);
   assert(bit >= 0);
 
-  //printf("bit: %lu\nsize: %lu\n", bit, type_size);
   set[bit / type_size] |= 1 << (bit % type_size);
 }
 
 static inline bsize_t get_bit (bsize_t *set, bsize_t bit) {
   assert(set != NULL);
   assert(bit >= 0);
-
 
   return (set[bit / type_size] & (1 << (bit % type_size))) != 0;
 }
