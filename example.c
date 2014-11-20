@@ -1,14 +1,17 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "lib/fnv.h"
 #include "bloom.h"
 
 extern uint32_t murmur3_32 (const char *, uint32_t, uint32_t);
 extern Fnv32_t fnv_32_str (char *str, Fnv32_t hval);
+extern uint32_t hashlittle (const void *, size_t, uint32_t);
 
 bsize_t hash1 (void *key, bsize_t len);
 bsize_t hash2 (void *key, bsize_t len);
+bsize_t hash3 (void *key, bsize_t len);
 
 int main () {
   bloom_filter_t filter = bloom_init(16);
@@ -29,4 +32,8 @@ bsize_t hash1 (void *key, bsize_t len) {
 
 bsize_t hash2 (void *key, bsize_t len) {
   return (bsize_t) fnv_32_str((char *) key, (Fnv32_t) len) % len;
+}
+
+bsize_t hash3 (void *key, bsize_t len) {
+  return (bsize_t) hashlittle((const void *) key, strlen((const char *) key), 0x777) % len;
 }
