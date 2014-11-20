@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "lib/fnv.h"
 #include "bloom.h"
+#include "lib/fnv.h"
 
 extern uint32_t murmur3_32 (const char *, uint32_t, uint32_t);
 extern Fnv32_t fnv_32_str (char *str, Fnv32_t hval);
