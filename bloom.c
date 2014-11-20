@@ -53,14 +53,20 @@ bloom_result_e bloom_query_multiple (bloom_filter_t filter, void *key, int num_h
   va_list hashes;
   va_start(hashes, num_hashes);
 
-  bloom_result_e res = BLOOM_MAYBE;
+  bloom_result_e res = BLOOM_MAYBE, cur = BLOOM_NO;
 
   // TODO: stop as soon as one bit is not set
-  for (int i = 0; i < num_hashes; i++)
-    res = res && get_bit(filter.set, va_arg(hashes, bloom_func_t)(key, filter.len));
+  for (int i = 0; i < num_hashes; i++) {
+    cur = get_bit(filter.set, va_arg(hashes, bloom_func_t)(key, filter.len));
+    if (!cur) {
+      va_end(hashes);
+      return BLOOM_NO;
+    }
+
+    res = res && cur;
+  }
 
   va_end(hashes);
-
   return res;
 }
 
