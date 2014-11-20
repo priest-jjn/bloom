@@ -1,2 +1,18 @@
+CC ?= gcc
+
+CFLAGS = -std=c99 -g3
+SRCS = bloom.c
+HASHES = lib/murmur3.c lib/fnv.c
+OBJS = *.o
+ARCHIVE = libbloom.a
+
 all:
-	gcc -std=c99 -g3 example.c bloom.c lib/murmur3.c lib/fnv.c
+	$(CC) $(CFLAGS) -c $(SRCS) $(HASHES)
+	ar cr $(ARCHIVE) $(OBJS)
+	rm *.o
+
+example:
+	$(CC) $(CFLAGS) example.c $(SRCS) $(HASHES)
+
+clean:
+	rm -rf *.out *.dSYM *.o *.a
