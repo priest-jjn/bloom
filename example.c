@@ -29,13 +29,18 @@ int main () {
 }
 
 bsize_t hash1 (void *key, bsize_t len) {
-  return (bsize_t) murmur3_32((const char *) key, (uint32_t) len, magic_number) % len;
+  return (bsize_t) murmur3_32((const char *) key,
+			      (uint32_t) len,
+			      magic_number) % len;
 }
 
 bsize_t hash2 (void *key, bsize_t len) {
-  return (bsize_t) fnv_32_str((char *) key, (Fnv32_t) len) % len;
+  return (bsize_t) fnv_32_str((char *) key,
+			      (Fnv32_t) len) % len;
 }
 
 bsize_t hash3 (void *key, bsize_t len) {
-  return (bsize_t) hashlittle((const void *) key, strlen((const char *) key), magic_number) % len;
+  return (bsize_t) hashlittle((const void *) key,
+			      strlen((const char *) key),
+			      magic_number) % len;
 }
