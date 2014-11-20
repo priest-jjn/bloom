@@ -14,5 +14,5 @@ int main () {
 }
 
 bsize_t hash1 (void *key, bsize_t len) {
-  return (bsize_t) murmur3_32 ((const char *) key, (uint32_t) len, 0x777) % len;
+  return (bsize_t) murmur3_32((const char *) key, (uint32_t) len, 0x777) % len;
 }
