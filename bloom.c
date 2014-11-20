@@ -6,8 +6,8 @@
 
 static const bsize_t type_size = sizeof(bsize_t) * 8;
 
-static void set_bit (bsize_t *filter, bsize_t bit);
-static bsize_t get_bit (bsize_t *filter, bsize_t bit);
+static inline void set_bit (bsize_t *filter, bsize_t bit);
+static inline bsize_t get_bit (bsize_t *filter, bsize_t bit);
 
 bloom_filter_t bloom_init (bsize_t size) {
   bloom_filter_t filter = { 0, size };
@@ -70,7 +70,7 @@ void bloom_destroy (bloom_filter_t filter) {
   free(filter.set);
 }
 
-static void set_bit (bsize_t *set, bsize_t bit) {
+static inline void set_bit (bsize_t *set, bsize_t bit) {
   assert(set != NULL);
   assert(bit >= 0);
 
@@ -78,7 +78,7 @@ static void set_bit (bsize_t *set, bsize_t bit) {
   set[bit / type_size] |= 1 << (bit % type_size);
 }
 
-static bsize_t get_bit (bsize_t *set, bsize_t bit) {
+static inline bsize_t get_bit (bsize_t *set, bsize_t bit) {
   assert(set != NULL);
   assert(bit >= 0);
 
