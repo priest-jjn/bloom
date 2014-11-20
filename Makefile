@@ -1,2 +1,2 @@
 all:
-	gcc -g3 main.c bloom.c lib/murmur3.c
+	gcc -g3 example.c bloom.c lib/murmur3.c
