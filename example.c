@@ -15,13 +15,13 @@ bsize_t hash3 (void *key, bsize_t len);
 
 int main () {
   bloom_filter_t filter = bloom_init(16);
-  bloom_add_multiple(filter, "max", 2, hash1, hash2);
+  bloom_add_multiple(filter, "max", 3, hash1, hash2, hash3);
 
   printf("query max? %d\n",
-	 bloom_query_multiple(filter, "max", 2, hash1, hash2));
+	 bloom_query_multiple(filter, "max", 3, hash1, hash2, hash3));
 
   printf("query joe? %d\n",
-	 bloom_query_multiple(filter, "joe", 2, hash1, hash2));
+	 bloom_query_multiple(filter, "joe", 3, hash1, hash2, hash3));
 
   bloom_destroy(filter);
 }
