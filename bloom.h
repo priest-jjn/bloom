@@ -12,8 +12,10 @@ typedef struct bloom_filter_s {
 typedef bsize_t (*bloom_func_t) (void *key, bsize_t len);
 
 bloom_filter_t bloom_init (bsize_t size);
-void bloom_add (bloom_filter_t filter, bloom_func_t f, void *key);
-bloom_result_e bloom_contains (bloom_filter_t filter, bloom_func_t f, void *key);
+void bloom_add (bloom_filter_t filter, void *key, bloom_func_t f);
+void bloom_add_multiple (bloom_filter_t filter, void *key, int num_hashes, ...);
+bloom_result_e bloom_query (bloom_filter_t filter, void *key, bloom_func_t f);
+bloom_result_e bloom_query_multiple (bloom_filter_t filter, void *key, int num_hashes, ...);
 void bloom_destroy (bloom_filter_t filter);
 
 #endif

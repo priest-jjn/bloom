@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdarg.h>
 #include <assert.h>
 
 #include "bloom.h"
@@ -14,20 +15,53 @@ bloom_filter_t bloom_init (bsize_t size) {
   return filter;
 }
 
-void bloom_add (bloom_filter_t filter, bloom_func_t f, void *key) {
+void bloom_add (bloom_filter_t filter, void *key, bloom_func_t f) {
   assert(filter.set != NULL);
-  assert(f != NULL);
   assert(key != NULL);
+  assert(f != NULL);
 
   set_bit(filter.set, f(key, filter.len));
 }
 
-bloom_result_e bloom_contains (bloom_filter_t filter, bloom_func_t f, void *key) {
+void bloom_add_multiple (bloom_filter_t filter, void *key, int num_hashes, ...) {
   assert(filter.set != NULL);
-  assert(f != NULL);
   assert(key != NULL);
+  assert(num_hashes > 0);
+
+  va_list hashes;
+  va_start(hashes, num_hashes);
+
+  for (int i = 0; i < num_hashes; i++)
+    set_bit(filter.set, va_arg(hashes, bloom_func_t)(key, filter.len));
+
+  va_end(hashes);
+}
+
+bloom_result_e bloom_query (bloom_filter_t filter, void *key, bloom_func_t f) {
+  assert(filter.set != NULL);
+  assert(key != NULL);
+  assert(f != NULL);
 
   return get_bit(filter.set, f(key, filter.len));
+}
+
+bloom_result_e bloom_query_multiple (bloom_filter_t filter, void *key, int num_hashes, ...) {
+  assert(filter.set != NULL);
+  assert(key != NULL);
+  assert(num_hashes > 0);
+
+  va_list hashes;
+  va_start(hashes, num_hashes);
+
+  bloom_result_e res = BLOOM_MAYBE;
+
+  // TODO: stop as soon as one bit is not set
+  for (int i = 0; i < num_hashes; i++)
+    res = res && get_bit(filter.set, va_arg(hashes, bloom_func_t)(key, filter.len));
+
+  va_end(hashes);
+
+  return res;
 }
 
 void bloom_destroy (bloom_filter_t filter) {
