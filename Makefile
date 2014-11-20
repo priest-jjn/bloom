@@ -2,7 +2,7 @@ CC ?= gcc
 
 CFLAGS = -std=c99 -g3
 SRCS = bloom.c
-HASHES = lib/murmur3.c lib/fnv.c lib/lookup3.c
+HASHES = lib/murmur3.c lib/fnv.c lib/lookup3.c -DNDEBUG
 OBJS = *.o
 ARCHIVE = libbloom.a
 
